@@ -1,5 +1,5 @@
 {
-  "name": "laralib/l5scaffold",
+  "name": "lann2k/l5scaffold",
   "description": "Extend Laravel 5's generators scaffold.",
   "keywords": ["laravel", "generators", "scaffold" , "laravel5"],
   "license": "MIT",
@@ -16,7 +16,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Laralib\\L5scaffold\\": "src/"
+      "Lann2k\\L5scaffold\\": "src/"
     }
   }
 }
