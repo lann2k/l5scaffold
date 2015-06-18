@@ -16,7 +16,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Lann2k\\L5scaffold\\": "src/"
+      "Laralib\\L5scaffold\\": "src/"
     }
   }
 }
