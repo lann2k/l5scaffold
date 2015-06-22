@@ -92,13 +92,13 @@ class ScaffoldMakeCommand extends Command
         $this->meta['table'] = $this->getObjName("names"); // Store table name
 
         // Generate files
-        $this->makeMigration();
-        $this->makeSeed();
+        //$this->makeMigration();
+        //$this->makeSeed();
         $this->makeModel();
         $this->makeController();
         $this->makeViewLayout();
         $this->makeViews();
-
+        
 
     }
 

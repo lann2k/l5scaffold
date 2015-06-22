@@ -198,6 +198,7 @@ class SyntaxBuilder
     private function constructSchema($schema, $direction = 'Add')
     {
         if (!$schema) return '';
+        
 
         $fields = array_map(function ($field) use ($direction) {
             $method = "{$direction}Column";
@@ -243,7 +244,7 @@ class SyntaxBuilder
         } elseif ($type == 'view-index-header') {
 
             // Fields to index view
-            $syntax = sprintf("<th>%s", strtoupper($field['name']));
+            $syntax = sprintf("<th>%s", strtoupper($field['comment']));
             $syntax .= '</th>';
 
         } elseif ($type == 'view-index-content') {
@@ -258,7 +259,7 @@ class SyntaxBuilder
             $syntax = sprintf("<div class=\"form-group\">\n" .
                 str_repeat(' ', 21)."<label for=\"%s\">%s</label>\n" .
                 str_repeat(' ', 21)."<p class=\"form-control-static\">{{\$%s->%s}}</p>\n" .
-                str_repeat(' ', 16)."</div>", strtolower($field['name']), strtoupper($field['name']), $meta['var_name'], strtolower($field['name']));
+                str_repeat(' ', 16)."</div>", strtolower($field['name']), strtoupper($field['comment']), $meta['var_name'], strtolower($field['name']));
 
 
         } elseif ($type == 'view-edit-content') {
@@ -267,7 +268,7 @@ class SyntaxBuilder
             $syntax = sprintf("<div class=\"form-group\">\n" .
                 str_repeat(' ', 21)."<label for=\"%s\">%s</label>\n" .
                 str_repeat(' ', 21)."<input type=\"text\" name=\"%s\" class=\"form-control\" value=\"{{\$%s->%s}}\"/>\n" .
-                str_repeat(' ', 16)."</div>", strtolower($field['name']), strtoupper($field['name']), strtolower($field['name']), $meta['var_name'], strtolower($field['name']));
+                str_repeat(' ', 16)."</div>", strtolower($field['name']), strtoupper($field['comment']), strtolower($field['name']), $meta['var_name'], strtolower($field['name']));
 
 
         } elseif ($type == 'view-create-content') {
@@ -276,7 +277,7 @@ class SyntaxBuilder
             $syntax = sprintf("<div class=\"form-group\">\n" .
                 str_repeat(' ', 21)."<label for=\"%s\">%s</label>\n" .
                 str_repeat(' ', 21)."<input type=\"text\" name=\"%s\" class=\"form-control\" value=\"\"/>\n" .
-                str_repeat(' ', 16)."</div>", strtolower($field['name']), strtoupper($field['name']), strtolower($field['name']), $meta['var_name'], strtolower($field['name']));
+                str_repeat(' ', 16)."</div>", strtolower($field['name']), strtoupper($field['comment']), strtolower($field['name']), $meta['var_name'], strtolower($field['name']));
 
 
         } else {
@@ -338,7 +339,7 @@ class SyntaxBuilder
 
 
         if (!$schema) return '';
-
+        
         $fields = array_map(function ($field) use ($meta, $type) {
             return $this->AddColumn($field, 'view-' . $type, $meta);
         }, $schema);

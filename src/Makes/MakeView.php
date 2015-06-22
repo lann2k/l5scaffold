@@ -139,7 +139,8 @@ class MakeView
             $schemaArray = (new SchemaParser)->parse($schema);
         }
 
-
+		if ($schema == "") $schemaArray = $this->getSchemaArray(); 
+		
         // Create view index header fields
         $schema = (new SyntaxBuilder)->create($schemaArray, $this->scaffoldCommandObj->getMeta(), 'view-index-header');
         $stub = str_replace('{{header_fields}}', $schema, $stub);
@@ -163,16 +164,60 @@ class MakeView
      * @param  string $stub
      * @return $this
      */
+     
+    protected function getSchemaArray()
+    {
+    	$table =  $this->scaffoldCommandObj->getObjName('name');
+    	$table = str_replace("[","",$table);
+    	$table = str_replace("]","",$table);
+    	
+    	$columns = \DB::connection()->getDoctrineSchemaManager()->listTableColumns($table);
+    					
+		$array = [];
+		foreach($columns as $column) 
+		{
+	  		//dd(get_class_methods($column));
+	  		
+		  $name = $column->getName();
+		  $type = $column->getType()->getName();		  	  
+		  $length = $column->getLength();
+		  $default = $column->getDefault();
+		  $comment = $column->getComment();
+		  
+		  if ($name == "id")
+		  	continue;
+		  
+		  $options = [];
+		  
+		  if ($default != "") $options["default"] = $default;
+		  
+		  $row = [];
+		  $row["name"] = $name;
+		  $row["type"] = $type;
+		  $row["comment"] = $comment ?: $name;
+		  $row["options"] = $options;
+		  
+		  $array[] = $row;
+		}
+		
+		return $array; 
+	}
+     
     protected function replaceSchemaShow(&$stub)
     {
 
         if ($schema = $this->scaffoldCommandObj->option('schema')) {
-            $schemaArray = (new SchemaParser)->parse($schema);
+        	
+            $schemaArray = (new SchemaParser)->parse($schema);           
+            //dd($schemaArray);
         }
+        
+        if ($schema == "") $schemaArray = $this->getSchemaArray();
 
 
         // Create view index content fields
         $schema = (new SyntaxBuilder)->create($schemaArray, $this->scaffoldCommandObj->getMeta(), 'view-show-content');
+        
         $stub = str_replace('{{content_fields}}', $schema, $stub);
 
 
@@ -192,6 +237,8 @@ class MakeView
         if ($schema = $this->scaffoldCommandObj->option('schema')) {
             $schemaArray = (new SchemaParser)->parse($schema);
         }
+        
+        if ($schema == "") $schemaArray = $this->getSchemaArray();     
 
 
         // Create view index content fields
@@ -217,6 +264,7 @@ class MakeView
             $schemaArray = (new SchemaParser)->parse($schema);
         }
 
+		if ($schema == "") $schemaArray = $this->getSchemaArray();
 
         // Create view index content fields
         $schema = (new SyntaxBuilder)->create($schemaArray, $this->scaffoldCommandObj->getMeta(), 'view-create-content');
